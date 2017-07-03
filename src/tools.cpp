@@ -12,54 +12,19 @@ using namespace std;
 Tools::Tools() {}
 
 Tools::~Tools() {}
-VectorXd calc(const vector<VectorXd> &estimations,
-              const vector<VectorXd> &ground_truth){
-    VectorXd rmse(4);
-    rmse << 0,0,0,0;
-    
-    // check the validity of the following inputs:
-    //  * the estimation vector size should not be zero
-    //  * the estimation vector size should equal ground truth vector size
-    if(estimations.size() != ground_truth.size()
-       || estimations.size() == 0){
-        cout << "Invalid estimation or ground_truth data" << endl;
-        return rmse;
-    }
-    
-    //accumulate squared residuals
-    for(unsigned int i=0; i < estimations.size(); ++i){
-        
-        VectorXd residual = estimations[i] - ground_truth[i];
-        
-        //coefficient-wise multiplication
-        residual = residual.array()*residual.array();
-        rmse += residual;
-    }
-    
-    //calculate the mean
-    rmse = rmse/estimations.size();
-    
-    //calculate the squared root
-    rmse = rmse.array().sqrt();
-    
-    //return the result
-    return rmse;
-    
-}
 
 VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
                               const vector<VectorXd> &ground_truth) {
   /**
-  TODO:
+  
     * Calculate the RMSE here.
   */
-    //VectorXd ans2 =  calc(estimations, ground_truth);
     VectorXd rmse2(4);
     rmse2 << 0,0,0,0;
     
     auto ground_truth_itr = begin(ground_truth);
     return  (accumulate( begin(estimations), end(estimations), rmse2, [&](VectorXd  ans, VectorXd  est_itm){
-        VectorXd diff = ( est_itm - (*ground_truth_itr) );// * ( est_itm - (*ground_truth_itr) ).array();
+        VectorXd diff = ( est_itm - (*ground_truth_itr) );
         diff = diff.array() * diff.array();
         ++ground_truth_itr;
         ans += diff;
@@ -70,7 +35,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   /**
-  TODO:
+  
     * Calculate a Jacobian here.
   */
     MatrixXd Hj(3,4);
